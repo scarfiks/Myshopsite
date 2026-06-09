@@ -1,9 +1,11 @@
 import { Category, Product, PaginatedResponse } from '@/types';
 
+// Базовый URL бэкенда (Express на порту 4000)
 const BASE_URL = 'http://localhost:4000/api';
 
 //Категории
 export async function getCategories(page = 1, limit = 10): Promise<PaginatedResponse<Category>> {
+  // Формируем URL с параметрами пагинации
   const res = await fetch(`${BASE_URL}/categories?page=${page}&limit=${limit}`);
   if (!res.ok) throw new Error('Failed to fetch categories');
   return res.json();
@@ -12,6 +14,7 @@ export async function getCategories(page = 1, limit = 10): Promise<PaginatedResp
 export async function getCategory(id: string): Promise<Category & { products?: Product[] }> {
   const res = await fetch(`${BASE_URL}/categories/${id}`);
   if (!res.ok) throw new Error('Category not found');
+  // Бэкенд возвращает категорию + массив товаров в ней (связь один-ко-многим)
   return res.json();
 }
 
@@ -28,6 +31,7 @@ export async function createCategory(data: { name: string; description?: string 
   return res.json();
 }
 
+// Обновление категории через PATCH (частичное обновление)
 export async function updateCategory(id: string, data: { name?: string; description?: string }): Promise<Category> {
   const res = await fetch(`${BASE_URL}/categories/${id}`, {
     method: 'PATCH',
@@ -66,12 +70,14 @@ export async function getProducts(
   return res.json();
 }
 
+// Получение одного товара с вложенной категорией
 export async function getProduct(id: string): Promise<Product & { category?: Category }> {
   const res = await fetch(`${BASE_URL}/products/${id}`);
   if (!res.ok) throw new Error('Product not found');
   return res.json();
 }
 
+// Создание товара: обязательны name, price, inStock, categoryId
 export async function createProduct(data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
   const res = await fetch(`${BASE_URL}/products`, {
     method: 'POST',
