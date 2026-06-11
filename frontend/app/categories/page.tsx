@@ -179,7 +179,7 @@ export default function CategoriesPage() {
                     href={`/products?categoryId=${cat.id}`}
                     className="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1"
                   >
-                    Смотреть товары
+                    Смотреть все товары
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
